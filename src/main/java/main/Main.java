@@ -22,7 +22,13 @@ public class Main {
 		BeanDefinitionCustomizer customizer = bd -> bd.setPrimary(true);
 		context.registerBean("rookie", Parrot.class, supplier, customizer);
 		
-		var pInCtxt = (Parrot) context.getBean("rookie", Parrot.class);
+		var q = new Parrot();
+		q.setName("미키");
+		supplier = () -> q;
+		
+		context.registerBean("meekie", Parrot.class, supplier);
+		
+		var pInCtxt = (Parrot) context.getBean(Parrot.class);
 		var ps = new PrintStream(System.out, true, UTF_8);
 		ps.println(pInCtxt.getName());
 

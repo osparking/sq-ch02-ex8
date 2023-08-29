@@ -5,6 +5,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import java.io.PrintStream;
 import java.util.function.Supplier;
 
+import org.springframework.beans.factory.config.BeanDefinitionCustomizer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import config.ProjectConfig;
@@ -18,7 +19,9 @@ public class Main {
 		p.setName("루키");
 
 		Supplier<Parrot> supplier = () -> p;
-		context.registerBean("rookie", Parrot.class, supplier);
+		BeanDefinitionCustomizer customizer = bd -> bd.setPrimary(true);
+		context.registerBean("rookie", Parrot.class, supplier, customizer);
+		
 		var pInCtxt = (Parrot) context.getBean("rookie", Parrot.class);
 		var ps = new PrintStream(System.out, true, UTF_8);
 		ps.println(pInCtxt.getName());
